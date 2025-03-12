@@ -41,7 +41,8 @@ def main():
 
     # Creating the paddles
     left_paddle = Paddle(-GRID_SIZE)
-    right_paddle = Paddle(GRID_SIZE-10)
+    # Right paddle must be adjusted so it is completely inside the screen
+    right_paddle = Paddle(GRID_SIZE - left_paddle.width/2)
 
     # Binding the keyboard controls
     setup_controls(screen, left_paddle, right_paddle)
