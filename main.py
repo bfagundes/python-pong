@@ -7,7 +7,7 @@ from config import (
 
 def setup_game_window():
     screen = Screen()
-    screen.title("Classic Pont")
+    screen.title("Classic Pong")
     screen.setup(width = SCREEN_WIDTH, height = SCREEN_HEIGHT)
     screen.bgcolor("black")
     screen.tracer(0)
