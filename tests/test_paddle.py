@@ -3,7 +3,10 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 import unittest
 from paddle import Paddle
-from config import GRID_SIZE
+from config import (
+    GRID_SIZE,
+    PADDLE_BASE_MOV_SPEED
+)
 
 class TestPaddle(unittest.TestCase):
     def setUp(self):
@@ -14,13 +17,13 @@ class TestPaddle(unittest.TestCase):
         """Test the Paddle UP movement"""
         initial_y = self.paddle.get_position()[1]
         self.paddle.move_up()
-        self.assertEqual(self.paddle.get_position()[1], initial_y + 20, f"Paddle failed to move up correctly")
+        self.assertEqual(self.paddle.get_position()[1], initial_y + PADDLE_BASE_MOV_SPEED, f"Paddle failed to move up correctly")
 
     def test_move_down(self):
         """Test the Paddle DOWN movement"""
         initial_y = self.paddle.get_position()[1]
         self.paddle.move_down()
-        self.assertEqual(self.paddle.get_position()[1], initial_y - 20, f"Paddle failed to move down correctly")
+        self.assertEqual(self.paddle.get_position()[1], initial_y - PADDLE_BASE_MOV_SPEED, f"Paddle failed to move down correctly")
 
     def test_upper_boundary(self):
         """Test the Paddle goes out of bounds on the UP boundary"""
