@@ -177,6 +177,5 @@ outline.txt
 *.vscode
 
 # Project specific files
-config.py
 spec.md
 plan.md
