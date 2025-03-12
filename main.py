@@ -33,7 +33,7 @@ def game_loop(screen, left_paddle, right_paddle):
 
     # Schedule the next screen update.
     # For reference, 1000ms = 1 second
-    screen.ontimer(lambda: game_loop(screen, left_paddle, right_paddle))
+    screen.ontimer(lambda: game_loop(screen, left_paddle, right_paddle), 0)
 
 def main():
     # Setting up the Game window
