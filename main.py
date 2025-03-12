@@ -7,6 +7,7 @@ from config import (
 )
 
 def setup_game_window():
+    """Setups the game window"""
     screen = Screen()
     screen.title("Classic Pong")
     screen.setup(width = SCREEN_WIDTH, height = SCREEN_HEIGHT)
@@ -18,13 +19,35 @@ def setup_game_window():
 
     return screen
 
+def setup_controls(screen, left_paddle, right_paddle):
+    """Binds keyboard controls to the paddles"""
+    screen.listen()
+    screen.onkey(lambda: left_paddle.move_up(), "w")
+    screen.onkey(lambda: left_paddle.move_down(), "s")
+    screen.onkey(lambda: right_paddle.move_up(), "Up")
+    screen.onkey(lambda: right_paddle.move_down(), "Down")
+
+def game_loop(screen, left_paddle, right_paddle):
+    """Handles the game loop and updates the screen"""
+    screen.update()
+
+    # Schedule the next screen update.
+    # For reference, 1000ms = 1 second
+    screen.ontimer(lambda: game_loop(screen, left_paddle, right_paddle))
+
 def main():
+    # Setting up the Game window
     screen = setup_game_window()
 
+    # Creating the paddles
     left_paddle = Paddle(-GRID_SIZE)
     right_paddle = Paddle(GRID_SIZE-10)
-    screen.update()
+
+    # Binding the keyboard controls
+    setup_controls(screen, left_paddle, right_paddle)
     
+    # Starting the game loop
+    game_loop(screen, left_paddle, right_paddle)
     screen.mainloop()
 
 if __name__ == "__main__":
