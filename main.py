@@ -1,4 +1,5 @@
 from turtle import Screen
+from paddle import Paddle
 from config import (
     SCREEN_WIDTH, 
     SCREEN_HEIGHT, 
@@ -19,6 +20,10 @@ def setup_game_window():
 
 def main():
     screen = setup_game_window()
+
+    left_paddle = Paddle(-GRID_SIZE)
+    right_paddle = Paddle(GRID_SIZE-10)
+    screen.update()
     
     screen.mainloop()
 

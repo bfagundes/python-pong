@@ -11,11 +11,14 @@ class Paddle:
         Args:
            x_position: The initial X position for the paddle
         """
+        self.width = 20
+        self.length = 100
+
         self.paddle = Turtle()
         self.paddle.speed(0)
         self.paddle.shape("square")
         self.paddle.color("white")
-        self.paddle.shapesize(stretch_wid=5, stretch_len=1)
+        self.paddle.shapesize(stretch_wid = self.length/20, stretch_len = self.width/20)
         self.paddle.penup()
         self.paddle.goto(x_position, 0)
 
