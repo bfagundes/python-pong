@@ -35,12 +35,6 @@ def setup_controls(screen, left_paddle, right_paddle, ball):
     screen.onkey(lambda: right_paddle.move_up(), "Up")
     screen.onkey(lambda: right_paddle.move_down(), "Down")
 
-    #Temporary for testing ball movement
-    #screen.onkey(lambda: ball.move_up(), "Up")
-    #screen.onkey(lambda: ball.move_down(), "Down")
-    #screen.onkey(lambda: ball.move_left(), "Left")
-    #screen.onkey(lambda: ball.move_right(), "Right")
-
 def game_loop(screen, left_paddle, right_paddle, ball):
     """Handles the game loop and updates the screen
         
@@ -51,13 +45,18 @@ def game_loop(screen, left_paddle, right_paddle, ball):
         ball: A ball object
     """
     ball.move()
-    print(ball.get_position())
+
+    if ball.collision_left() or ball.collision_right():
+        ball.bounce_x()
+    
+    if ball.collision_top() or ball.collision_down():
+        ball.bounce_y()
 
     screen.update()
 
     # Schedule the next screen update.
     # For reference, 1000ms = 1 second
-    screen.ontimer(lambda: game_loop(screen, left_paddle, right_paddle, ball), 100)
+    screen.ontimer(lambda: game_loop(screen, left_paddle, right_paddle, ball), 200)
 
 def main():
     # Setting up the Game window

@@ -30,31 +30,11 @@ class Ball:
         Returns: A tuple (x,y) with the current X and Y position of the paddle
         """
         return self.ball.xcor(), self.ball.ycor()
-    
-    # def move_up(self):
-    #     """Moves the Ball UP"""
-    #     if self.ball.ycor() < GRID_SIZE:
-    #         self.ball.sety(self.ball.ycor() + BALL_BASE_MOV_SPEED)
-
-    # def move_down(self):
-    #     """Moves the Ball DOWN"""
-    #     if self.ball.ycor() > -GRID_SIZE:
-    #         self.ball.sety(self.ball.ycor() - BALL_BASE_MOV_SPEED)
-
-    # def move_left(self):
-    #     """Moves the Ball LEFT"""
-    #     if self.ball.xcor() > -GRID_SIZE:
-    #         self.ball.setx(self.ball.xcor() - BALL_BASE_MOV_SPEED)
-
-    # def move_right(self):
-    #     """Moves the Ball RIGHT"""
-    #     if self.ball.xcor() < GRID_SIZE:
-    #         self.ball.setx(self.ball.xcor() + BALL_BASE_MOV_SPEED)
 
     def move(self):
         """Moves the ball"""
-        new_x = self.ball.xcor() + BALL_BASE_MOV_SPEED
-        new_y = self.ball.ycor() + BALL_BASE_MOV_SPEED
+        new_x = self.ball.xcor() + self.x_move
+        new_y = self.ball.ycor() + self.y_move
         self.ball.goto(new_x, new_y)
 
     def bounce_x(self):
@@ -75,25 +55,25 @@ class Ball:
         
         Returns:
             True if a collision is detected, False otherwise"""
-        return self.ball.xcor() >= -GRID_SIZE
+        return self.ball.xcor() <= -GRID_SIZE + self.size
     
     def collision_right(self):
         """Detects collision between the ball and the right wall
         
         Returns:
             True if a collision is detected, False otherwise"""
-        return self.ball.xcor() <= GRID_SIZE
+        return self.ball.xcor() >= GRID_SIZE - self.size
 
     def collision_top(self):
         """Detects collision between the ball and the top wall
         
         Returns:
             True if a collision is detected, False otherwise"""
-        return self.ball.ycor() <= GRID_SIZE
+        return self.ball.ycor() >= GRID_SIZE - self.size
 
     def collision_down(self):
         """Detects collision between the ball and the bottom wall
         
         Returns:
             True if a collision is detected, False otherwise"""
-        return self.ball.ycor() >= - GRID_SIZE
+        return self.ball.ycor() <= -GRID_SIZE + self.size
