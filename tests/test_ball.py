@@ -13,6 +13,38 @@ class TestBall(unittest.TestCase):
         """Set up the test environment"""
         self.ball = Ball()
 
+    def test_initial_position(self):
+        """Test whether the ball starts at the correct initial position"""
+        self.assertEqual(self.ball.ball.xcor(), self.ball.initial_position[0], f"The Ball's Initial position is incorrect on X axis")
+        self.assertEqual(self.ball.ball.ycor(), self.ball.initial_position[1], f"The Ball's Initial position is incorrect on Y axis")
+
+    def test_reset_position(self):
+        """Test whether the ball resets correctly to the initial position"""
+        self.ball.move()
+        self.ball.reset_position()
+        self.assertEqual(self.ball.ball.xcor(), self.ball.initial_position[0], f"The Ball's Initial position is incorrect on X axis")
+        self.assertEqual(self.ball.ball.ycor(), self.ball.initial_position[1], f"The Ball's Initial position is incorrect on Y axis")
+
+    def test_move(self):
+        """Test the ball movement"""
+        initial_x = self.ball.ball.xcor()
+        initial_y = self.ball.ball.ycor()
+        self.ball.move()
+        self.assertEqual(self.ball.ball.xcor(), initial_x + BALL_BASE_MOV_SPEED, f"The Ball's movement is incorrect on X axis")
+        self.assertEqual(self.ball.ball.ycor(), initial_y + BALL_BASE_MOV_SPEED, f"The Ball's movement is incorrect on Y axis")
+
+    def test_bounce_y(self):
+        """Test the ball's bouncing correctly on Y axis"""
+        initial_y_move = self.ball.y_move
+        self.ball.bounce_y()
+        self.assertEqual(self.ball.y_move, -initial_y_move, f"The ball's bouncing is incorrect on Y axis")
+
+    def test_bounce_x(self):
+        """Test the ball's bouncing correctly on X axis"""
+        initial_x_move = self.ball.x_move
+        self.ball.bounce_x()
+        self.assertEqual(self.ball.x_move, -initial_x_move, f"The ball's bouncing is incorrect on Y axis")
+
     def test_collision_left(self):
         """Test the ball collision on the left boundary"""
         self.ball.ball.sety(-GRID_SIZE)
@@ -39,3 +71,10 @@ class TestBall(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+
+
+
+
+
