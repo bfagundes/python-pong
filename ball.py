@@ -97,8 +97,13 @@ class Ball:
         ball_y = self.ball.ycor()
         paddle_x = paddle.paddle.xcor()
         paddle_y = paddle.paddle.ycor()
+
         paddle_half_length = paddle.length / 2
-        paddle_half_width = paddle.width / 2  # Ensure width is accounted for
+        paddle_half_width = paddle.width / 2
+
+        paddle_top = paddle_y + paddle_half_length
+        paddle_bottom = paddle_y - paddle_half_length
+        print(f"Ball Y: {ball_y} | Paddle Y {paddle_y} |Paddle Y Range: {paddle_bottom} to {paddle_top}")
 
         # Check if ball is within paddle's X range (considering width)
         if paddle_x - paddle_half_width <= ball_x <= paddle_x + paddle_half_width:
@@ -114,8 +119,8 @@ class Ball:
             left_paddle (Paddle): the left Paddle object
             right_paddle (Paddle): the right paddle object"""
         if self.check_paddle_collision(left_paddle) or self.check_paddle_collision(right_paddle):
-            self.increase_speed()
             self.bounce_x()
+            self.increase_speed()
 
     def handle_collisions(self, left_paddle, right_paddle):
         """Handles all possible collisions with the Ball"""
