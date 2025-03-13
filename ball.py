@@ -52,28 +52,48 @@ class Ball:
     #         self.ball.setx(self.ball.xcor() + BALL_BASE_MOV_SPEED)
 
     def move(self):
+        """Moves the ball"""
         new_x = self.ball.xcor() + BALL_BASE_MOV_SPEED
         new_y = self.ball.ycor() + BALL_BASE_MOV_SPEED
         self.ball.goto(new_x, new_y)
 
     def bounce_x(self):
+        """Bounces the ball on the X axis"""
         self.x_move *= -1
 
     def bounce_y(self):
+        """Bounces the ball on the Y axis"""
         self.y_move *= -1
 
     def reset_position(self):
+        """Resets the ball position to the initial position"""
         self.ball.goto(self.initial_position)
         self.bounce_x()
     
     def collision_left(self):
+        """Detects collision between the ball and the left wall
+        
+        Returns:
+            True if a collision is detected, False otherwise"""
         return self.ball.xcor() >= -GRID_SIZE
     
     def collision_right(self):
+        """Detects collision between the ball and the right wall
+        
+        Returns:
+            True if a collision is detected, False otherwise"""
         return self.ball.xcor() <= GRID_SIZE
 
     def collision_top(self):
+        """Detects collision between the ball and the top wall
+        
+        Returns:
+            True if a collision is detected, False otherwise"""
         return self.ball.ycor() <= GRID_SIZE
 
     def collision_down(self):
+        """Detects collision between the ball and the bottom wall
+        
+        Returns:
+            True if a collision is detected, False otherwise"""
         return self.ball.ycor() >= - GRID_SIZE
