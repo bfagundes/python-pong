@@ -1,7 +1,8 @@
 from turtle import Turtle
 from config import (
     GRID_SIZE,
-    BALL_BASE_MOV_SPEED
+    DIFFICULTY,
+    DIFFICULTY_SETTINGS
 )
 
 class Ball:
@@ -15,8 +16,12 @@ class Ball:
         self.boundary_offset = 10
         self.initial_position = (0,0)
 
-        self.x_move = BALL_BASE_MOV_SPEED
-        self.y_move = BALL_BASE_MOV_SPEED
+        self.base_speed = DIFFICULTY_SETTINGS[DIFFICULTY]["ball_speed"]
+        self.max_speed = DIFFICULTY_SETTINGS[DIFFICULTY]["max_speed"]
+        self.speed = self.base_speed
+
+        self.x_move = self.speed
+        self.y_move = self.speed
 
         # Make it a little smaller
         self.ball.shapesize(stretch_wid=0.7, stretch_len=0.7)
@@ -48,7 +53,14 @@ class Ball:
     def reset_position(self):
         """Resets the ball position to the initial position"""
         self.ball.goto(self.initial_position)
-        self.bounce_x()
+
+    def increase_speed(self):
+        """Increases the ball speed by 1"""
+        if self.speed < self.max_speed:
+            self.speed += 1
+
+        self.x_move = self.speed if self.x_move > 0 else -self.speed
+        self.y_move = self.speed if self.y_move > 0 else -self.speed
     
     def collision_left(self):
         """Detects collision between the ball and the left wall
@@ -75,23 +87,34 @@ class Ball:
         return self.ball.ycor() <= -GRID_SIZE + self.size
     
     def check_paddle_collision(self, paddle):
-        """Detects collision between the ball and a paddle
+        """Detects collision between the ball and a paddle.
         Args:
             paddle (Paddle): The paddle to check collision with.
         Returns:
-            bool: True if a collision is detected, False otherwise
+            bool: True if a collision is detected, False otherwise.
         """
-        return (
-            abs(self.ball.xcor() - paddle.paddle.xcor()) < self.size and
-            paddle.paddle.ycor() - paddle.length / 2 < self.ball.ycor() < paddle.paddle.ycor() + paddle.length / 2
-        )
+        ball_x = self.ball.xcor()
+        ball_y = self.ball.ycor()
+        paddle_x = paddle.paddle.xcor()
+        paddle_y = paddle.paddle.ycor()
+        paddle_half_length = paddle.length / 2
+        paddle_half_width = paddle.width / 2  # Ensure width is accounted for
+
+        # Check if ball is within paddle's X range (considering width)
+        if paddle_x - paddle_half_width <= ball_x <= paddle_x + paddle_half_width:
+            # Check if ball is within paddle's Y range
+            if paddle_y - paddle_half_length <= ball_y <= paddle_y + paddle_half_length:
+                return True
+
+        return False
     
     def collision_paddle(self, left_paddle, right_paddle):
         """Checks collision with either paddle and bounces the ball if detected
         Args:
-        left_paddle (Paddle): the left Paddle object
-        right_paddle (Paddle): the right paddle object"""
+            left_paddle (Paddle): the left Paddle object
+            right_paddle (Paddle): the right paddle object"""
         if self.check_paddle_collision(left_paddle) or self.check_paddle_collision(right_paddle):
+            self.increase_speed()
             self.bounce_x()
 
     def handle_collisions(self, left_paddle, right_paddle):

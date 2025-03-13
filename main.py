@@ -45,8 +45,13 @@ def game_loop(screen, left_paddle, right_paddle, ball):
         ball: A ball object
     """
     
+    # Moving the ball and checking collision
     ball.move()
     ball.handle_collisions(left_paddle, right_paddle)
+
+    # Update Paddles speed to match the ball's speed
+    left_paddle.update_speed(ball.speed)
+    right_paddle.update_speed(ball.speed)
 
     screen.update()
 

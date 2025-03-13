@@ -6,7 +6,8 @@ from ball import Ball
 from paddle import Paddle
 from config import (
     GRID_SIZE,
-    BALL_BASE_MOV_SPEED
+    DIFFICULTY,
+    DIFFICULTY_SETTINGS
 )
 
 class TestBall(unittest.TestCase):
@@ -33,8 +34,8 @@ class TestBall(unittest.TestCase):
         initial_x = self.ball.ball.xcor()
         initial_y = self.ball.ball.ycor()
         self.ball.move()
-        self.assertEqual(self.ball.ball.xcor(), initial_x + BALL_BASE_MOV_SPEED, f"The Ball's movement is incorrect on X axis")
-        self.assertEqual(self.ball.ball.ycor(), initial_y + BALL_BASE_MOV_SPEED, f"The Ball's movement is incorrect on Y axis")
+        self.assertEqual(self.ball.ball.xcor(), initial_x + DIFFICULTY_SETTINGS[DIFFICULTY]["ball_speed"], f"The Ball's movement is incorrect on X axis")
+        self.assertEqual(self.ball.ball.ycor(), initial_y + DIFFICULTY_SETTINGS[DIFFICULTY]["ball_speed"], f"The Ball's movement is incorrect on Y axis")
 
     def test_bounce_y(self):
         """Test the ball's bouncing correctly on Y axis"""
@@ -85,12 +86,45 @@ class TestBall(unittest.TestCase):
         # Simulate collision with left paddle
         self.ball.ball.goto(self.left_paddle.paddle.xcor(), self.left_paddle.paddle.ycor())
         self.ball.collision_paddle(self.left_paddle, self.right_paddle)
-        self.assertEqual(self.ball.x_move, -initial_x_move, f"The ball did not bounce corectly after coliding with the left paddle")
+        self.assertLess(self.ball.x_move, 0, "The ball did not bounce correctly after colliding with the left paddle")
+
+        # Store updated speed
+        new_speed = abs(self.ball.x_move)
 
         # Simulate collision with right paddle
         self.ball.ball.goto(self.right_paddle.paddle.xcor(), self.right_paddle.paddle.ycor())
         self.ball.collision_paddle(self.left_paddle, self.right_paddle)
-        self.assertEqual(self.ball.x_move, initial_x_move, f"The ball did not bounce correctly after coliding with the right paddle")
+        self.assertGreater(self.ball.x_move, 0, "The ball did not bounce correctly after colliding with the right paddle")
+
+    def test_initial_speed(self):
+        """Test if the ball starts with the correct speed based on difficulty."""
+        expected_speed = DIFFICULTY_SETTINGS[DIFFICULTY]["ball_speed"]
+        self.assertEqual(abs(self.ball.x_move), expected_speed, f"Incorrect starting speed X")
+        self.assertEqual(abs(self.ball.y_move), expected_speed, f"Incorrect starting speed Y")
+
+    def test_speed_increase(self):
+        """Test if the ball speed increases correctly upon paddle collision."""
+        initial_speed = self.ball.speed
+        max_speed = DIFFICULTY_SETTINGS[DIFFICULTY]["max_speed"]
+        self.ball.ball.goto(self.right_paddle.paddle.xcor(), self.right_paddle.paddle.ycor())
+
+        # Simulate multiple paddle collisions
+        for _ in range(3):  
+            self.ball.collision_paddle(self.left_paddle, self.right_paddle)
+
+        expected_speed = min(initial_speed + 3, max_speed)
+        self.assertEqual(self.ball.speed, expected_speed, "Speed did not increase correctly after paddle collisions")
+
+    def test_max_speed(self):
+        """Test that the ball speed does not exceed max speed."""
+        max_speed = DIFFICULTY_SETTINGS[DIFFICULTY]["max_speed"]
+        self.ball.ball.goto(self.right_paddle.paddle.xcor(), self.right_paddle.paddle.ycor())
+
+        # Simulate excessive paddle hits
+        for _ in range(20):  
+            self.ball.collision_paddle(self.left_paddle, self.right_paddle)
+
+        self.assertEqual(self.ball.speed, max_speed, "Speed exceeded max speed")
 
     def tearDown(self):
         """Tear down after each test"""

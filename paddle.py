@@ -1,7 +1,8 @@
 from turtle import Turtle
 from config import (
     GRID_SIZE,
-    PADDLE_BASE_MOV_SPEED
+    DIFFICULTY,
+    DIFFICULTY_SETTINGS
 ) 
 
 class Paddle:
@@ -14,7 +15,7 @@ class Paddle:
         self.base_size = 20
         self.width = 20
         self.length = 100
-        self.boundary_offset = (self.length / 2) + self.base_size
+        self.boundary_offset = self.length / 2
 
         self.paddle = Turtle()
         self.paddle.speed(0)
@@ -24,15 +25,17 @@ class Paddle:
         self.paddle.penup()
         self.paddle.goto(x_position, 0)
 
+        self.speed = DIFFICULTY_SETTINGS[DIFFICULTY]["ball_speed"]
+
     def move_up(self):
         """Moves the Paddle UP"""
         if self.paddle.ycor() < GRID_SIZE - self.boundary_offset:
-            self.paddle.sety(self.paddle.ycor() + PADDLE_BASE_MOV_SPEED)
-
+            self.paddle.sety(min(self.paddle.ycor() + self.speed, GRID_SIZE - self.boundary_offset))
+    
     def move_down(self):
         """Moves the Paddle DOWN"""
         if self.paddle.ycor() > -GRID_SIZE + self.boundary_offset:
-            self.paddle.sety(self.paddle.ycor() - PADDLE_BASE_MOV_SPEED)
+            self.paddle.sety(max(self.paddle.ycor() - self.speed, -GRID_SIZE + self.boundary_offset))
 
     def get_position(self):
         """Returns the Paddle current position.
@@ -40,6 +43,10 @@ class Paddle:
         Returns: A tuple (x,y) with the current X and Y position of the paddle
         """
         return self.paddle.xcor(), self.paddle.ycor()
+    
+    def update_speed(self, new_speed):
+        """Updates the Paddle speed"""
+        self.speed = new_speed
 
 if __name__ == "__main__":
     pass
