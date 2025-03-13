@@ -44,13 +44,9 @@ def game_loop(screen, left_paddle, right_paddle, ball):
         right_paddle: A Paddle object, to represent the right side paddle
         ball: A ball object
     """
-    ball.move()
-
-    if ball.collision_left() or ball.collision_right():
-        ball.bounce_x()
     
-    if ball.collision_top() or ball.collision_down():
-        ball.bounce_y()
+    ball.move()
+    ball.handle_collisions(left_paddle, right_paddle)
 
     screen.update()
 

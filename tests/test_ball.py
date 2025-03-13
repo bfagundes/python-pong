@@ -3,6 +3,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 import unittest
 from ball import Ball
+from paddle import Paddle
 from config import (
     GRID_SIZE,
     BALL_BASE_MOV_SPEED
@@ -12,6 +13,8 @@ class TestBall(unittest.TestCase):
     def setUp(self):
         """Set up the test environment"""
         self.ball = Ball()
+        self.left_paddle = Paddle(-GRID_SIZE)
+        self.right_paddle = Paddle(GRID_SIZE - self.left_paddle.width/2)
 
     def test_initial_position(self):
         """Test whether the ball starts at the correct initial position"""
@@ -64,6 +67,30 @@ class TestBall(unittest.TestCase):
         """Test the ball collision on the lower boundary"""
         self.ball.ball.sety(-GRID_SIZE)
         self.assertTrue(self.ball.collision_down(), f"Ball collision with lower wall not detected")
+
+    def test_paddle_collision(self):
+        """Test the ball collision with the paddles"""
+        # Simulate collision with left paddle
+        self.ball.ball.goto(self.left_paddle.paddle.xcor(), self.left_paddle.paddle.ycor())
+        self.assertTrue(self.ball.check_paddle_collision(self.left_paddle), f"Ball collision with the left paddle not detected correctly.")
+
+        # Simulate collision with right paddle
+        self.ball.ball.goto(self.right_paddle.paddle.xcor(), self.right_paddle.paddle.ycor())
+        self.assertTrue(self.ball.check_paddle_collision(self.right_paddle), f"Ball collision with the right paddle not detected correctly.")
+
+    def test_ball_bounce_on_paddle(self):
+        """Test if the ball correctly bounces after coliding with a paddle"""
+        initial_x_move = self.ball.x_move
+
+        # Simulate collision with left paddle
+        self.ball.ball.goto(self.left_paddle.paddle.xcor(), self.left_paddle.paddle.ycor())
+        self.ball.collision_paddle(self.left_paddle, self.right_paddle)
+        self.assertEqual(self.ball.x_move, -initial_x_move, f"The ball did not bounce corectly after coliding with the left paddle")
+
+        # Simulate collision with right paddle
+        self.ball.ball.goto(self.right_paddle.paddle.xcor(), self.right_paddle.paddle.ycor())
+        self.ball.collision_paddle(self.left_paddle, self.right_paddle)
+        self.assertEqual(self.ball.x_move, initial_x_move, f"The ball did not bounce correctly after coliding with the right paddle")
 
     def tearDown(self):
         """Tear down after each test"""
