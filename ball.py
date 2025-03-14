@@ -97,27 +97,27 @@ class Ball:
         Returns:
             bool: True if a collision is detected, False otherwise.
         """
-        ball_x = self.ball.xcor()
-        ball_y = self.ball.ycor()
+        # ball_x = self.ball.xcor()
+        # ball_y = self.ball.ycor()
         
-        paddle_x = paddle.paddle.xcor()
-        paddle_y = paddle.paddle.ycor()
-        paddle_half_length = paddle.length / 2
-        paddle_half_width = paddle.width / 2
-        paddle_top = paddle_y + paddle_half_length
-        paddle_bottom = paddle_y - paddle_half_length
+        # paddle_x = paddle.paddle.xcor()
+        # paddle_y = paddle.paddle.ycor()
+        # paddle_half_length = paddle.length / 2
+        # paddle_half_width = paddle.width / 2
+        paddle_top = paddle.paddle.ycor() + paddle.length / 2
+        paddle_bottom = paddle.paddle.ycor() - paddle.length / 2
 
-        if paddle_x == -GRID_SIZE:
+        if paddle.paddle.xcor() == -GRID_SIZE:
             # Left Paddle
             return (
-                ball_x <= -GRID_SIZE + self.size + paddle_half_width and
-                paddle_bottom <= ball_y <= paddle_top
+                self.ball.xcor() <= -GRID_SIZE + self.size + paddle.width / 2 and
+                paddle_bottom <= self.ball.ycor() <= paddle_top
             )
         else:
             # Right Paddle
             return (
-                ball_x >= GRID_SIZE - self.size - paddle_half_width and
-                paddle_bottom <= ball_y <= paddle_top
+                self.ball.xcor() >= GRID_SIZE - self.size - paddle.width / 2 and
+                paddle_bottom <= self.ball.ycor() <= paddle_top
             )
 
     def handle_collisions(self, left_paddle, right_paddle):
