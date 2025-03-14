@@ -122,6 +122,19 @@ class TestBall(unittest.TestCase):
 
         self.assertEqual(self.ball.speed, max_speed, "Speed exceeded max speed")
 
+    def test_adjust_angle(self):
+        """Tests whether the ball adjusts its angle when colliding with a Paddle"""
+
+        test_cases = [(1, -3),(11, -2),(31, -1),(46,0),(56,1),(71,2),(91,3)]
+
+        for ball_y_offset, expected_result in test_cases:
+            with self.subTest(ball_y_offset = ball_y_offset, expected_result = expected_result):
+                self.ball.ball.setx(self.left_paddle.paddle.xcor())
+                self.ball.ball.sety(self.left_paddle.paddle_bottom + ball_y_offset)
+                #self.ball.adjust_angle(self.left_paddle)
+                self.ball.handle_collisions(self.left_paddle, self.right_paddle)
+                self.assertEqual(self.ball.y_move, expected_result, f"Failed to adjust the angle after Paddle collision.")
+
     def tearDown(self):
         """Tear down after each test"""
         pass

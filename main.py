@@ -65,8 +65,6 @@ def main():
     # Right paddle must be adjusted so it is completely inside the screen
     right_paddle = Paddle(GRID_SIZE - left_paddle.width/2)
 
-    left_paddle.get_regions()
-
     # Creating the ball
     ball = Ball()
 

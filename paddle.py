@@ -44,6 +44,16 @@ class Paddle:
         """
         return self.paddle.xcor(), self.paddle.ycor()
     
+    @property
+    def paddle_top(self):
+        """Dynamically calculates the paddle's top Y-coordinate."""
+        return self.paddle.ycor() + self.length / 2
+    
+    @property
+    def paddle_bottom(self):
+        """Dynamically calculates the paddle's bottom Y-coordinate."""
+        return self.paddle.ycor() - self.length / 2
+    
     def get_regions(self):
         """Returns the Paddle regions
 
