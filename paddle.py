@@ -44,6 +44,41 @@ class Paddle:
         """
         return self.paddle.xcor(), self.paddle.ycor()
     
+    def get_regions(self):
+        """Returns the Paddle regions
+
+        :returns: A list of tuples with all the paddle regions. (Min value, Max value)
+        :rtype: List[tuple]:
+        """
+
+        # Breakpoint percentages
+        percentages = [0,10,30,45,55,70,90,100]
+
+        # Calculating the breakpoints dinamically (in case paddle length changes)
+        breakpoints = []
+        for p in percentages:
+            breakpoints.append(int(self.length * p / 100))
+        print(f"Breakpoints: {breakpoints}")
+
+        adjusted_breakpoints = []
+        adjusted_breakpoints.append(breakpoints[0])
+        for b in breakpoints[1:-1]:
+            adjusted_breakpoints.append(breakpoints[b]+breakpoints[b+1])
+        print(f"Breakpoints: {adjusted_breakpoints}")
+
+        regions = []
+        for i in range(len(adjusted_breakpoints) -1):
+            regions.append((adjusted_breakpoints[i], adjusted_breakpoints[i+1]))
+        print(f"Regions: {regions}")
+      
+#   0-10 y+3
+#  11-30 y+2
+#  31-45 Y+1
+#  46-55 y=0
+#  56-70 y-1
+#  71-90 y-2
+# 91-100 y-3
+
     def update_speed(self, new_speed):
         """Updates the Paddle speed"""
         self.speed = new_speed
