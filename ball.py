@@ -13,12 +13,12 @@ class Ball:
         self.ball.color("white")
         self.ball.penup()
         self.size = 20
-        self.boundary_offset = 10
         self.initial_position = (0,0)
 
         self.base_speed = DIFFICULTY_SETTINGS[DIFFICULTY]["ball_speed"]
         self.max_speed = DIFFICULTY_SETTINGS[DIFFICULTY]["max_speed"]
         self.speed = self.base_speed
+        self.pending_speed_increase = False
 
         self.x_move = self.speed
         self.y_move = self.speed
@@ -59,8 +59,8 @@ class Ball:
         if self.speed < self.max_speed:
             self.speed += 1
 
-        self.x_move = self.speed if self.x_move > 0 else -self.speed
-        self.y_move = self.speed if self.y_move > 0 else -self.speed
+        #self.x_move = self.speed if self.x_move > 0 else -self.speed
+        #self.y_move = self.speed if self.y_move > 0 else -self.speed
     
     def collision_left(self):
         """Detects collision between the ball and the left wall
@@ -95,39 +95,60 @@ class Ball:
         """
         ball_x = self.ball.xcor()
         ball_y = self.ball.ycor()
+        
         paddle_x = paddle.paddle.xcor()
         paddle_y = paddle.paddle.ycor()
-
         paddle_half_length = paddle.length / 2
         paddle_half_width = paddle.width / 2
-
         paddle_top = paddle_y + paddle_half_length
         paddle_bottom = paddle_y - paddle_half_length
-        print(f"Ball Y: {ball_y} | Paddle Y {paddle_y} |Paddle Y Range: {paddle_bottom} to {paddle_top}")
 
-        # Check if ball is within paddle's X range (considering width)
-        if paddle_x - paddle_half_width <= ball_x <= paddle_x + paddle_half_width:
-            # Check if ball is within paddle's Y range
-            if paddle_y - paddle_half_length <= ball_y <= paddle_y + paddle_half_length:
-                return True
-
-        return False
+        if paddle_x == -GRID_SIZE:
+            # Left Paddle
+            return (
+                ball_x <= -GRID_SIZE + self.size + paddle_half_width and
+                ball_y <= paddle_top and
+                ball_y >= paddle_bottom
+            )
+        else:
+            # Right Paddle
+            return (
+                ball_x >= GRID_SIZE - self.size - paddle_half_width and
+                ball_y <= paddle_top and
+                ball_y >= paddle_bottom
+            )
     
     def collision_paddle(self, left_paddle, right_paddle):
         """Checks collision with either paddle and bounces the ball if detected
         Args:
             left_paddle (Paddle): the left Paddle object
             right_paddle (Paddle): the right paddle object"""
+        
+        if self.check_paddle_collision(left_paddle):
+            print(f"L Paddle Collision")
+        if self.check_paddle_collision(right_paddle):
+            print(f"R Paddle Collision")
+        if self.collision_left():
+            print(f"L Wall collision")
+        if self.collision_right():
+            print(f"R Wall collision")
+
         if self.check_paddle_collision(left_paddle) or self.check_paddle_collision(right_paddle):
             self.bounce_x()
-            self.increase_speed()
+            self.pending_speed_increase = True
 
     def handle_collisions(self, left_paddle, right_paddle):
         """Handles all possible collisions with the Ball"""
+
+        if self.pending_speed_increase:
+            self.increase_speed()
+            self.pending_speed_increase = False
+
+        self.collision_paddle(left_paddle, right_paddle)
+
         if self.collision_left() or self.collision_right():
-            self.bounce_x()
+            self.bounce_x() # remove this
+            pass # increase score and do other applicable actions
 
         if self.collision_top() or self.collision_down():
             self.bounce_y()
-
-        self.collision_paddle(left_paddle, right_paddle)

@@ -20,7 +20,7 @@ def setup_game_window():
 
     return screen
 
-def setup_controls(screen, left_paddle, right_paddle, ball):
+def setup_controls(screen, left_paddle, right_paddle):
     """Binds keyboard controls to the paddles
     
     Args:
@@ -72,7 +72,7 @@ def main():
     ball = Ball()
 
     # Binding the keyboard controls
-    setup_controls(screen, left_paddle, right_paddle, ball)
+    setup_controls(screen, left_paddle, right_paddle)
     
     # Starting the game loop
     game_loop(screen, left_paddle, right_paddle, ball)
