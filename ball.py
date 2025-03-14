@@ -111,23 +111,18 @@ class Ball:
             # Left Paddle
             return (
                 ball_x <= -GRID_SIZE + self.size + paddle_half_width and
-                ball_y <= paddle_top and
-                ball_y >= paddle_bottom
+                paddle_bottom <= ball_y <= paddle_top
             )
         else:
             # Right Paddle
             return (
                 ball_x >= GRID_SIZE - self.size - paddle_half_width and
-                ball_y <= paddle_top and
-                ball_y >= paddle_bottom
+                paddle_bottom <= ball_y <= paddle_top
             )
-    
-    def collision_paddle(self, left_paddle, right_paddle):
-        """Checks collision with either paddle and bounces the ball if detected
-        Args:
-            left_paddle (Paddle): the left Paddle object
-            right_paddle (Paddle): the right paddle object"""
-        
+
+    def handle_collisions(self, left_paddle, right_paddle):
+        """Handles all possible collisions with the Ball"""
+
         if self.check_paddle_collision(left_paddle):
             print(f"L Paddle Collision")
         if self.check_paddle_collision(right_paddle):
@@ -141,14 +136,9 @@ class Ball:
             self.bounce_x()
             self.increase_speed()
 
-    def handle_collisions(self, left_paddle, right_paddle):
-        """Handles all possible collisions with the Ball"""
-
-        self.collision_paddle(left_paddle, right_paddle)
-
-        if self.collision_left() or self.collision_right():
+        elif self.collision_left() or self.collision_right():
             self.bounce_x() # remove this
             pass # increase score and do other applicable actions
 
-        if self.collision_top() or self.collision_down():
+        elif self.collision_top() or self.collision_down():
             self.bounce_y()
