@@ -18,10 +18,11 @@ class Ball:
         self.base_speed = DIFFICULTY_SETTINGS[DIFFICULTY]["ball_speed"]
         self.max_speed = DIFFICULTY_SETTINGS[DIFFICULTY]["max_speed"]
         self.speed_increment = DIFFICULTY_SETTINGS[DIFFICULTY]["speed_increment"]
+        self.angle = DIFFICULTY_SETTINGS[DIFFICULTY]["start_angle"]
         self.speed = self.base_speed
 
         self.x_move = self.speed
-        self.y_move = self.speed
+        self.y_move = self.angle
 
         # Make it a little smaller
         self.ball.shapesize(stretch_wid=0.7, stretch_len=0.7)
@@ -59,9 +60,6 @@ class Ball:
         """Increases the ball speed"""
         if self.speed < self.max_speed:
             self.speed += self.speed_increment
-
-        #self.x_move = self.speed if self.x_move > 0 else -self.speed
-        #self.y_move = self.speed if self.y_move > 0 else -self.speed
     
     def collision_left(self):
         """Detects collision between the ball and the left wall
@@ -93,7 +91,7 @@ class Ball:
     
     def check_paddle_collision(self, paddle):
         """Detects collision between the ball and a paddle.
-        
+
         Args:
             paddle (Paddle): The paddle to check collision with.
         Returns:
