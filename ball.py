@@ -17,8 +17,8 @@ class Ball:
 
         self.base_speed = DIFFICULTY_SETTINGS[DIFFICULTY]["ball_speed"]
         self.max_speed = DIFFICULTY_SETTINGS[DIFFICULTY]["max_speed"]
+        self.speed_increment = DIFFICULTY_SETTINGS[DIFFICULTY]["speed_increment"]
         self.speed = self.base_speed
-        self.pending_speed_increase = False
 
         self.x_move = self.speed
         self.y_move = self.speed
@@ -32,7 +32,8 @@ class Ball:
     def get_position(self):
         """Returns the Ball's current position.
         
-        Returns: A tuple (x,y) with the current X and Y position of the paddle
+        :returns: A tuple (x,y) with the current X and Y position of the paddle
+        :rtype: tuple[float, float]
         """
         return self.ball.xcor(), self.ball.ycor()
 
@@ -55,39 +56,44 @@ class Ball:
         self.ball.goto(self.initial_position)
 
     def increase_speed(self):
-        """Increases the ball speed by 1"""
+        """Increases the ball speed"""
         if self.speed < self.max_speed:
-            self.speed += 1
+            self.speed += self.speed_increment
 
         #self.x_move = self.speed if self.x_move > 0 else -self.speed
         #self.y_move = self.speed if self.y_move > 0 else -self.speed
     
     def collision_left(self):
         """Detects collision between the ball and the left wall
+
         Returns:
             bool: True if a collision is detected, False otherwise"""
         return self.ball.xcor() <= -GRID_SIZE + self.size
     
     def collision_right(self):
         """Detects collision between the ball and the right wall
+
         Returns:
             bool: True if a collision is detected, False otherwise"""
         return self.ball.xcor() >= GRID_SIZE - self.size
 
     def collision_top(self):
         """Detects collision between the ball and the top wall
+
         Returns:
             bool: True if a collision is detected, False otherwise"""
         return self.ball.ycor() >= GRID_SIZE - self.size
 
     def collision_down(self):
         """Detects collision between the ball and the bottom wall
+
         Returns:
             bool: True if a collision is detected, False otherwise"""
         return self.ball.ycor() <= -GRID_SIZE + self.size
     
     def check_paddle_collision(self, paddle):
         """Detects collision between the ball and a paddle.
+        
         Args:
             paddle (Paddle): The paddle to check collision with.
         Returns:
@@ -135,14 +141,10 @@ class Ball:
 
         if self.check_paddle_collision(left_paddle) or self.check_paddle_collision(right_paddle):
             self.bounce_x()
-            self.pending_speed_increase = True
+            self.increase_speed()
 
     def handle_collisions(self, left_paddle, right_paddle):
         """Handles all possible collisions with the Ball"""
-
-        if self.pending_speed_increase:
-            self.increase_speed()
-            self.pending_speed_increase = False
 
         self.collision_paddle(left_paddle, right_paddle)
 

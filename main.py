@@ -22,12 +22,10 @@ def setup_game_window():
 
 def setup_controls(screen, left_paddle, right_paddle):
     """Binds keyboard controls to the paddles
-    
     Args:
         screen: An Scren object
         left_paddle: A Paddle object, to represent the left side paddle
         right_paddle: A Paddle object, to represent the right side paddle
-        ball: A ball object
     """
     screen.listen()
     screen.onkey(lambda: left_paddle.move_up(), "w")
@@ -37,7 +35,6 @@ def setup_controls(screen, left_paddle, right_paddle):
 
 def game_loop(screen, left_paddle, right_paddle, ball):
     """Handles the game loop and updates the screen
-        
     Args:
         screen: An Scren object
         left_paddle: A Paddle object, to represent the left side paddle

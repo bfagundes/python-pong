@@ -9,16 +9,19 @@ DIFFICULTY = "medium"
 DIFFICULTY_SETTINGS = {
     "easy": {
         "ball_speed": 4,
-        "max_speed": 8
+        "max_speed": 8,
+        "speed_increment": 1
     },
 
     "medium": {
         "ball_speed": 8,
-        "max_speed": 16
+        "max_speed": 16,
+        "speed_increment": 1
     },
 
     "hard": {
         "ball_speed": 16,
-        "max_speed": 24
+        "max_speed": 24,
+        "speed_increment": 1
     }
 }

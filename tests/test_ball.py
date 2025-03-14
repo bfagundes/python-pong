@@ -88,9 +88,6 @@ class TestBall(unittest.TestCase):
         self.ball.collision_paddle(self.left_paddle, self.right_paddle)
         self.assertLess(self.ball.x_move, 0, "The ball did not bounce correctly after colliding with the left paddle")
 
-        # Store updated speed
-        new_speed = abs(self.ball.x_move)
-
         # Simulate collision with right paddle
         self.ball.ball.goto(self.right_paddle.paddle.xcor(), self.right_paddle.paddle.ycor())
         self.ball.collision_paddle(self.left_paddle, self.right_paddle)
