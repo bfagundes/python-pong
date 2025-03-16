@@ -21,7 +21,7 @@ A **classic Pong game** built in Python using the **turtle** library. This game 
 
 1. **Clone the repository**:
    ```sh
-   git clone https://github.com/yourusername/pong-game.git
+   git clone https://github.com/bfagundes/python-pong.git
    cd pong-game
    ```
 
