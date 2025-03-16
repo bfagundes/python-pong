@@ -131,7 +131,6 @@ class TestBall(unittest.TestCase):
             with self.subTest(ball_y_offset = ball_y_offset, expected_result = expected_result):
                 self.ball.ball.setx(self.left_paddle.paddle.xcor())
                 self.ball.ball.sety(self.left_paddle.paddle_bottom + ball_y_offset)
-                #self.ball.adjust_angle(self.left_paddle)
                 self.ball.handle_collisions(self.left_paddle, self.right_paddle)
                 self.assertEqual(self.ball.y_move, expected_result, f"Failed to adjust the angle after Paddle collision.")
 
