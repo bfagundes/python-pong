@@ -1,6 +1,6 @@
-import time
+import time, random
 from turtle import Turtle
-from config import GRID_SIZE
+from config import GRID_SIZE, ANGLES
 
 class Game: 
     def __init__(self):
@@ -38,10 +38,15 @@ class Game:
         """
 
         ball.reset_position()
-        time.sleep(2)  # Pause before resuming
-        ball.x_move = abs(ball.base_speed) * direction  # Set movement towards the loser
-        ball.y_move = ball.base_speed  # Reset vertical movement
-        ball.speed = ball.base_speed  # Reset speed to default
+        # Pause before resuming
+        time.sleep(2)  
+
+        # Set movement towards the loser
+        ball.x_move = abs(ball.base_speed) * direction  
+
+        # Update vertical angle to a random one
+        new_angle = random.choice(ANGLES)
+        ball.y_move = new_angle
     
     def update_score_display(self):
         """Updates the score display on the screen."""

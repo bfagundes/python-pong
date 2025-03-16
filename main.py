@@ -1,6 +1,7 @@
 from turtle import Screen
 from paddle import Paddle
 from ball import Ball
+from game import Game
 from config import (
     SCREEN_WIDTH, 
     SCREEN_HEIGHT, 
@@ -33,18 +34,26 @@ def setup_controls(screen, left_paddle, right_paddle):
     screen.onkey(lambda: right_paddle.move_up(), "Up")
     screen.onkey(lambda: right_paddle.move_down(), "Down")
 
-def game_loop(screen, left_paddle, right_paddle, ball):
+def game_loop(screen, left_paddle, right_paddle, ball, game):
     """Handles the game loop and updates the screen
     Args:
-        screen: An Scren object
-        left_paddle: A Paddle object, to represent the left side paddle
-        right_paddle: A Paddle object, to represent the right side paddle
-        ball: A ball object
+        screen (Screen): An Scren object
+        left_paddle (Paddle): A Paddle object, to represent the left side paddle
+        right_paddle (Paddle): A Paddle object, to represent the right side paddle
+        ball (Ball): A ball object
+        game (Game): The game object
     """
     
     # Moving the ball and checking collision
     ball.move()
     ball.handle_collisions(left_paddle, right_paddle)
+
+    # Checks for score
+    game.check_score(ball)
+
+    if game.is_game_over():
+        print(f"Game Over!")
+        return
 
     # Update Paddles speed to match the ball's speed
     left_paddle.update_speed(ball.speed)
@@ -54,7 +63,7 @@ def game_loop(screen, left_paddle, right_paddle, ball):
 
     # Schedule the next screen update.
     # For reference, 1000ms = 1 second
-    screen.ontimer(lambda: game_loop(screen, left_paddle, right_paddle, ball), 100)
+    screen.ontimer(lambda: game_loop(screen, left_paddle, right_paddle, ball, game), 100)
 
 def main():
     # Setting up the Game window
@@ -68,11 +77,14 @@ def main():
     # Creating the ball
     ball = Ball()
 
+    # Initializes the game
+    game = Game()
+
     # Binding the keyboard controls
     setup_controls(screen, left_paddle, right_paddle)
     
     # Starting the game loop
-    game_loop(screen, left_paddle, right_paddle, ball)
+    game_loop(screen, left_paddle, right_paddle, ball, game)
     screen.mainloop()
 
 if __name__ == "__main__":
