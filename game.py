@@ -1,6 +1,6 @@
 import time, random
 from turtle import Turtle
-from config import GRID_SIZE, ANGLES
+from config import GRID_SIZE, ANGLES, MAX_SCORE
 
 class Game: 
     def __init__(self):
@@ -61,9 +61,17 @@ class Game:
             (int,int): The score as a tuple (PlayerA, PlayerB)"""
         return self.playera_score, self.playerb_score
     
-    def is_game_over(self, max_score=7):
-        """Checks if a player has won the game.
-        
-        Returns:
-            bool: True if the game is over, False otherwise"""
-        return self.playera_score >= max_score or self.playerb_score >= max_score
+    def is_game_over(self):
+        """Checks if a player has won the game and displays the game-over message."""
+        if self.playera_score >= MAX_SCORE:
+            self.display_game_over("Player A won!")
+            return True
+        elif self.playerb_score >= MAX_SCORE:
+            self.display_game_over("Player B won!")
+            return True
+        return False
+    
+    def display_game_over(self, winner):
+        """Displays the game-over message below the score."""
+        self.score_display.goto(0, GRID_SIZE - 100)
+        self.score_display.write(f"Game Over. {winner}", align="center", font=("Courier", 20, "bold"))
