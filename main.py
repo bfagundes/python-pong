@@ -5,7 +5,8 @@ from game import Game
 from config import (
     SCREEN_WIDTH, 
     SCREEN_HEIGHT, 
-    GRID_SIZE
+    GRID_SIZE,
+    SINGLE_PLAYER
 )
 
 def setup_game_window():
@@ -31,8 +32,10 @@ def setup_controls(screen, left_paddle, right_paddle):
     screen.listen()
     screen.onkey(lambda: left_paddle.move_up(), "w")
     screen.onkey(lambda: left_paddle.move_down(), "s")
-    screen.onkey(lambda: right_paddle.move_up(), "Up")
-    screen.onkey(lambda: right_paddle.move_down(), "Down")
+
+    if not SINGLE_PLAYER:
+        screen.onkey(lambda: right_paddle.move_up(), "Up")
+        screen.onkey(lambda: right_paddle.move_down(), "Down")
 
 def game_loop(screen, left_paddle, right_paddle, ball, game):
     """Handles the game loop and updates the screen
@@ -49,7 +52,8 @@ def game_loop(screen, left_paddle, right_paddle, ball, game):
     ball.handle_collisions(left_paddle, right_paddle)
 
     # Ask AI to move the right Paddle for us
-    game.ai_move_paddle(right_paddle, ball)
+    if SINGLE_PLAYER:
+        game.ai_move_paddle(right_paddle, ball)
 
     # Checks for score
     game.check_score(ball)

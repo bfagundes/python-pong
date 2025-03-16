@@ -7,6 +7,8 @@ BALL_BASE_MOV_SPEED = 4
 
 MAX_SCORE = 7
 
+SINGLE_PLAYER = True
+
 ANGLES = [-3, -2, -1, 0, 1, 2, 3]
 
 DIFFICULTY = "medium"
