@@ -15,7 +15,7 @@ A **classic Pong game** built in Python using the **turtle** library. This game 
 - **Simple UI**: White paddles and ball on a black background for an authentic retro feel.
 
 ## Screenshot
-*(Add a screenshot of the game here)*
+![An screenshot of the Pong Game](images/screenshot.png)
 
 ## Installation & Setup
 
@@ -41,7 +41,7 @@ A **classic Pong game** built in Python using the **turtle** library. This game 
 - **Player 2 (Right Paddle)**: `↑` (up), `↓` (down) *(Only active in two-player mode)*
 
 ### Activate Two-Player mode
-To activate the two-player mode, set the `SINGLE_PLAYER` parameter on `config.py` to `False`
+To activate the two-player mode, set the `SINGLE_PLAYER` parameter on `config.py` to `False`.
 
 ## ⚙️ Project Structure
 
