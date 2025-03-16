@@ -48,6 +48,9 @@ def game_loop(screen, left_paddle, right_paddle, ball, game):
     ball.move()
     ball.handle_collisions(left_paddle, right_paddle)
 
+    # Ask AI to move the right Paddle for us
+    game.ai_move_paddle(right_paddle, ball)
+
     # Checks for score
     game.check_score(ball)
 

@@ -1,6 +1,9 @@
 import time, random
 from turtle import Turtle
-from config import GRID_SIZE, ANGLES, MAX_SCORE
+from config import (
+    GRID_SIZE, ANGLES, MAX_SCORE,
+    DIFFICULTY, DIFFICULTY_SETTINGS
+)
 
 class Game: 
     def __init__(self):
@@ -75,3 +78,39 @@ class Game:
         """Displays the game-over message below the score."""
         self.score_display.goto(0, GRID_SIZE - 100)
         self.score_display.write(f"Game Over. {winner}", align="center", font=("Courier", 20, "bold"))
+
+    def ai_move_paddle(self, paddle, ball):
+        """Moves the AI paddle based on difficulty settings.
+        
+        Args:
+            paddle (Paddle): The paddle to be controlled by AI
+            ball (Ball): The game's Ball object
+        """
+
+        ai_speed = DIFFICULTY_SETTINGS[DIFFICULTY]["ball_speed"] * DIFFICULTY_SETTINGS[DIFFICULTY]["ai_speed"]
+        reaction_chance = DIFFICULTY_SETTINGS[DIFFICULTY]["ai_reaction"]
+
+        # Moves when the ball is 10 px away from the Paddle Y position
+        if abs(ball.ball.ycor() - paddle.paddle.ycor()) > 10:
+
+            # If the ball is above the Paddle, move up
+            if ball.ball.ycor() > paddle.paddle.ycor():
+                paddle.paddle.sety(paddle.paddle.ycor() + ai_speed * 2)
+
+            # If the ball is below the Paddle, move down
+            else:
+                paddle.paddle.sety(paddle.paddle.ycor() - ai_speed * 2)
+
+        # Introduce AI Mistakes
+        # Random.random() generates a random number between 0 and 1
+        # If this number is greather than the raction_chance, the AI makes a mistake
+        # Mistake = The AI moves the Paddle to the opposite direction it should
+        if random.random() > reaction_chance:
+
+            # If the ball is above the Paddle, move DOWN
+            if ball.ball.ycor() > paddle.paddle.ycor():
+                paddle.paddle.sety(paddle.paddle.ycor() - ai_speed)
+
+            # If the ball is below the Paddle, move UP
+            else:
+                paddle.paddle.sety(paddle.paddle.ycor() + ai_speed)

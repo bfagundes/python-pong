@@ -1,3 +1,4 @@
+import random
 from turtle import Turtle
 from config import (
     GRID_SIZE,
@@ -80,14 +81,6 @@ class Paddle:
         for i in range(len(adjusted_breakpoints) -1):
             regions.append((adjusted_breakpoints[i], adjusted_breakpoints[i+1]))
         print(f"Regions: {regions}")
-      
-#   0-10 y+3
-#  11-30 y+2
-#  31-45 Y+1
-#  46-55 y=0
-#  56-70 y-1
-#  71-90 y-2
-# 91-100 y-3
 
     def update_speed(self, new_speed):
         """Updates the Paddle speed"""

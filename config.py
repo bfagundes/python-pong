@@ -15,20 +15,26 @@ DIFFICULTY_SETTINGS = {
         "ball_speed": 4,
         "max_speed": 8,
         "speed_increment": 1,
-        "start_angle": 1
+        "start_angle": 1,
+        "ai_reaction": 0.7,
+        "ai_speed": 0.5
     },
 
     "medium": {
         "ball_speed": 8,
         "max_speed": 16,
         "speed_increment": 1,
-        "start_angle": 2
+        "start_angle": 2,
+        "ai_reaction": 0.8,
+        "ai_speed": 0.7
     },
 
     "hard": {
         "ball_speed": 16,
         "max_speed": 24,
         "speed_increment": 1,
-        "start_angle": 3
+        "start_angle": 3,
+        "ai_reaction": 0.9,
+        "ai_speed": 0.9
     }
 }
