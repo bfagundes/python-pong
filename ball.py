@@ -5,13 +5,13 @@ from config import (
     DIFFICULTY_SETTINGS
 )
 
-class Ball:
+class Ball(Turtle):
     def __init__(self):
         """Initializes the Ball object"""
-        self.ball = Turtle()
-        self.ball.shape("circle")
-        self.ball.color("white")
-        self.ball.penup()
+        super().__init__()
+        self.shape("circle")
+        self.color("white")
+        self.penup()
         self.size = 20
         self.initial_position = (0,0)
 
@@ -19,16 +19,16 @@ class Ball:
         self.max_speed = DIFFICULTY_SETTINGS[DIFFICULTY]["max_speed"]
         self.speed_increment = DIFFICULTY_SETTINGS[DIFFICULTY]["speed_increment"]
         self.angle = DIFFICULTY_SETTINGS[DIFFICULTY]["start_angle"]
-        self.speed = self.base_speed
+        self.ball_speed = self.base_speed
 
-        self.x_move = self.speed
+        self.x_move = self.ball_speed
         self.y_move = self.angle
 
         # Make it a little smaller
-        self.ball.shapesize(stretch_wid=0.7, stretch_len=0.7)
+        self.shapesize(stretch_wid=0.7, stretch_len=0.7)
 
         # Define initial position and draw
-        self.ball.goto(self.initial_position)
+        self.goto(self.initial_position)
 
     def get_position(self):
         """Returns the Ball's current position.
@@ -36,13 +36,13 @@ class Ball:
         :returns: A tuple (x,y) with the current X and Y position of the paddle
         :rtype: tuple[float, float]
         """
-        return self.ball.xcor(), self.ball.ycor()
+        return self.xcor(), self.ycor()
 
     def move(self):
         """Moves the ball"""
-        new_x = self.ball.xcor() + self.x_move
-        new_y = self.ball.ycor() + self.y_move
-        self.ball.goto(new_x, new_y)
+        new_x = self.xcor() + self.x_move
+        new_y = self.ycor() + self.y_move
+        self.goto(new_x, new_y)
 
     def bounce_x(self):
         """Bounces the ball on the X axis"""
@@ -54,47 +54,47 @@ class Ball:
 
     def reset_position(self):
         """Resets the ball position to the initial position"""
-        self.ball.goto(self.initial_position)
+        self.goto(self.initial_position)
 
     def increase_speed(self):
         """Increases the ball speed"""
-        if self.speed < self.max_speed:
-            self.speed += self.speed_increment
+        if self.ball_speed < self.max_speed:
+            self.ball_speed += self.speed_increment
     
     def collision_left(self):
         """Detects collision between the ball and the left wall
 
         Returns:
             bool: True if a collision is detected, False otherwise"""
-        return self.ball.xcor() <= -GRID_SIZE + self.size
+        return self.xcor() <= -GRID_SIZE + self.size
     
     def collision_right(self):
         """Detects collision between the ball and the right wall
 
         Returns:
             bool: True if a collision is detected, False otherwise"""
-        return self.ball.xcor() >= GRID_SIZE - self.size
+        return self.xcor() >= GRID_SIZE - self.size
 
     def collision_top(self):
         """Detects collision between the ball and the top wall
 
         Returns:
             bool: True if a collision is detected, False otherwise"""
-        return self.ball.ycor() >= GRID_SIZE - self.size
+        return self.ycor() >= GRID_SIZE - self.size
 
     def collision_down(self):
         """Detects collision between the ball and the bottom wall
 
         Returns:
             bool: True if a collision is detected, False otherwise"""
-        return self.ball.ycor() <= -GRID_SIZE + self.size
+        return self.ycor() <= -GRID_SIZE + self.size
     
     def adjust_angle(self, paddle):
         """Adjusts the ball angle (Y axis) after colliding with a Paddle
         Args:
             paddle (Paddle): The paddle that the Ball collided to
         """
-        impact_position = ((self.ball.ycor() - paddle.paddle_bottom) / paddle.length) * 100
+        impact_position = ((self.ycor() - paddle.paddle_bottom) / paddle.length) * 100
         print(f"Impact position: {impact_position}")
 
         if impact_position <= 10:
@@ -123,14 +123,14 @@ class Ball:
         if paddle.paddle.xcor() == -GRID_SIZE:
             # Left Paddle
             return (
-                self.ball.xcor() <= -GRID_SIZE + self.size + paddle.width / 2 and
-                paddle.paddle_bottom <= self.ball.ycor() <= paddle.paddle_top
+                self.xcor() <= -GRID_SIZE + self.size + paddle.width / 2 and
+                paddle.paddle_bottom <= self.ycor() <= paddle.paddle_top
             )
         else:
             # Right Paddle
             return (
-                self.ball.xcor() >= GRID_SIZE - self.size - paddle.width / 2 and
-                paddle.paddle_bottom <= self.ball.ycor() <= paddle.paddle_top
+                self.xcor() >= GRID_SIZE - self.size - paddle.width / 2 and
+                paddle.paddle_bottom <= self.ycor() <= paddle.paddle_top
             )
 
     def handle_collisions(self, left_paddle, right_paddle):
@@ -156,8 +156,8 @@ class Ball:
             self.increase_speed()
 
         elif self.collision_left() or self.collision_right():
-            self.bounce_x() # remove this
-            pass # increase score and do other applicable actions
+            self.bounce_x()
+            pass
 
         elif self.collision_top() or self.collision_down():
             self.bounce_y()

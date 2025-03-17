@@ -1,4 +1,3 @@
-import random
 from turtle import Turtle
 from config import (
     GRID_SIZE,
@@ -83,7 +82,10 @@ class Paddle:
         print(f"Regions: {regions}")
 
     def update_speed(self, new_speed):
-        """Updates the Paddle speed"""
+        """Updates the Paddle speed
+        
+        Args:
+            new_speed (int): The new speed for the Paddle"""
         self.speed = new_speed
 
 if __name__ == "__main__":
