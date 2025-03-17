@@ -91,10 +91,10 @@ class Game:
         reaction_chance = DIFFICULTY_SETTINGS[DIFFICULTY]["ai_reaction"]
 
         # Moves when the ball is 10 px away from the Paddle Y position
-        if abs(ball.ball.ycor() - paddle.paddle.ycor()) > 10:
+        if abs(ball.ycor() - paddle.paddle.ycor()) > 10:
 
             # If the ball is above the Paddle, move up
-            if ball.ball.ycor() > paddle.paddle.ycor():
+            if ball.ycor() > paddle.paddle.ycor():
                 paddle.paddle.sety(paddle.paddle.ycor() + ai_speed * 2)
 
             # If the ball is below the Paddle, move down
@@ -108,7 +108,7 @@ class Game:
         if random.random() > reaction_chance:
 
             # If the ball is above the Paddle, move DOWN
-            if ball.ball.ycor() > paddle.paddle.ycor():
+            if ball.ycor() > paddle.paddle.ycor():
                 paddle.paddle.sety(paddle.paddle.ycor() - ai_speed)
 
             # If the ball is below the Paddle, move UP

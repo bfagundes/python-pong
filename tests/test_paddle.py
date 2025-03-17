@@ -40,13 +40,13 @@ class TestPaddle(unittest.TestCase):
 
     def test_initial_paddle_speed(self):
         """Test if paddle starts with the correct speed."""
-        self.assertEqual(self.paddle.speed, self.ball.speed, f"Incorrect starting speed")
+        self.assertEqual(self.paddle.speed, self.ball.ball_speed, f"Incorrect starting speed")
 
     def test_paddle_speed_updates(self):
         """Test if paddle speed updates correctly to match ball speed."""
         self.ball.bounce_x()  # Increase ball speed
-        self.paddle.update_speed(self.ball.speed)
-        self.assertEqual(self.paddle.speed, self.ball.speed, f"Speed did not update correctly")
+        self.paddle.update_speed(self.ball.ball_speed)
+        self.assertEqual(self.paddle.speed, self.ball.ball_speed, f"Speed did not update correctly")
 
     def tearDown(self):
         """Tear down after each test"""
