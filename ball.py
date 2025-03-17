@@ -120,7 +120,7 @@ class Ball(Turtle):
         Returns:
             bool: True if a collision is detected, False otherwise.
         """
-        if paddle.paddle.xcor() == -GRID_SIZE:
+        if paddle.xcor() == -GRID_SIZE:
             # Left Paddle
             return (
                 self.xcor() <= -GRID_SIZE + self.size + paddle.width / 2 and
