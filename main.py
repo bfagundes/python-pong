@@ -63,8 +63,8 @@ def game_loop(screen, left_paddle, right_paddle, ball, game):
         return
 
     # Update Paddles speed to match the ball's speed
-    left_paddle.update_speed(ball.speed)
-    right_paddle.update_speed(ball.speed)
+    left_paddle.update_speed(ball.ball_speed)
+    right_paddle.update_speed(ball.ball_speed)
 
     screen.update()
 
